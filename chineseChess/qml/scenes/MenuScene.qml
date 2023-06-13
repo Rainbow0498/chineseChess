@@ -1,52 +1,86 @@
-import Felgo 3.0
 import QtQuick 2.0
+import Felgo 3.0
 import "../common"
 
-SceneBase {
+Scene {
     id: menuScene
 
-    // signal indicating that the selectLevelScene should be displayed
-    signal selectLevelPressed
     // signal indicating that the creditsScene should be displayed
-    signal creditsPressed
+    signal singleFightPressed
+    // signal indicating that the settingsScene should be displayed
+    signal doubleFightPressed
 
     // background
     Rectangle {
+        border.color: "red"
         anchors.fill: parent.gameWindowAnchorItem
-        color: "#47688e"
+        Image{
+            source: "../../assets/img/backgroundImage.jpg"
+            fillMode: Image.PreserveAspectCrop
+            anchors.fill: parent
+        }
     }
 
     // the "logo"
     Text {
         anchors.horizontalCenter: parent.horizontalCenter
-        y: 30
+        y: 70
         font.pixelSize: 30
-        color: "#e9e9e9"
-        text: "MultiSceneMultiLevel"
+        color: "brown"
+        font.bold: true
+       // font.pixelSize:
+        text: "Menu Scene" //zhucaidan
     }
 
-    // menu
+    // TODO replace the buttons with your custom styled buttons
     Column {
         anchors.centerIn: parent
-        spacing: 10
+        spacing: 20
         MenuButton {
-            text: "Levels"
-            onClicked: selectLevelPressed()
+            text: "single"
+            onClicked: singleFightPressed()
         }
         MenuButton {
             text: "Credits"
-            onClicked: creditsPressed()
+            onClicked: doubleFightPressed()
         }
-    }
+        MenuButton{
+            id:setButton
+            width:70
+            height: 30
+            Image{
+                id:setButton_image
+                source: "../../assets/img/bottonBackground.jpg"
+                fillMode: Image.PreserveAspectCrop
+                anchors.fill: parent
+                MouseArea{
+                    anchors.fill:parent
+                    onEntered:{
+                        setButton_image.source = "../../assets/img/buttonBackground2.jpg"
+                        setText.color="#7B0E01"
+                    }
+                    onExited: {
+                        setButton_image.source ="../../assets/img/bottonBackground.jpg"
+                        setText.color="black"
+                    }
 
-    // a little Felgo logo is always nice to have, right?
-    Image {
-        source: "../../assets/img/felgo-logo.png"
-        width: 60
-        height: 60
-        anchors.right: menuScene.gameWindowAnchorItem.right
-        anchors.rightMargin: 10
-        anchors.bottom: menuScene.gameWindowAnchorItem.bottom
-        anchors.bottomMargin: 10
+                    onPressed: {
+                        setButton.opacity =0.5
+                    }
+                    onReleased: {
+                        setButton.opacity =1
+                    }
+                }
+                Text {
+                    id: setText
+                    text: qsTr("Set")
+                    font.bold: true
+                    font.pixelSize: 20
+                    font.family: "NSimSun"
+                    anchors.centerIn: parent
+                }
+            }
+            onClicked: setGamePressed()
+        }
     }
 }
